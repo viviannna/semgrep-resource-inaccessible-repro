@@ -28,17 +28,3 @@ registry URL is classified as `ResourceInaccessible` by the resolver.
 
 The repro depends on GitHub continuing to return 401 for anonymous Maven requests.
 Supplying credentials or a Maven mirror can change the result.
-
-## Reproduce the Maven failure locally
-
-With Docker available:
-
-```sh
-docker run --rm -v "$PWD:/project:ro" maven:3.9.9-eclipse-temurin-17 \
-  mvn -B org.apache.maven.plugins:maven-dependency-plugin:3.8.0:tree \
-  -DoutputFile=/tmp/dependencies.json -DoutputType=json -f /project/pom.xml
-```
-
-Expected: Maven exits nonzero with an artifact-transfer error containing the GitHub
-registry URL and `401 Unauthorized`. This command checks the underlying failure;
-it does not itself run Semgrep or verify the Cloud Platform error display.
